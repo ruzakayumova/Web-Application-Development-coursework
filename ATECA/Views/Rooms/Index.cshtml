@@ -1,0 +1,94 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc;
+@model IEnumerable<ATECA.Models.Rooms>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    @using (Html.BeginForm()) 
+    {
+    <div class="form-inline">
+        <div class="form-group">
+            @Html.TextBox("Name", "", new { @class = "form-contorl", placeholder = "Name" })
+        </div>
+        <div class="form-group">
+            @Html.TextBox("Price", "", new { @class = "form-contorl", placeholder = "Price" })
+        </div>
+        <div class="form-group">
+            @Html.TextBox("Category", "", new { @class = "form-contorl", placeholder = "Category" })
+        </div>
+
+        <button type="submit" class="btn btn-default">Filter</button>
+    </div>
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink(
+                Html.DisplayNameFor(model => model.Name).ToHtmlString()
+                , "Index"
+                , new {sort = ViewBag.NameSort, page= ViewBag.CurrentPage })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sleep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Beds)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.ActionLink(
+                Html.DisplayNameFor(model => model.Price).ToHtmlString()
+                , "Index"
+                , new { sort = ViewBag.PriceSort, page = ViewBag.CurrentPage })
+        </th>
+        <th>
+            @Html.ActionLink(
+                Html.DisplayNameFor(model => model.Category).ToHtmlString()
+                , "Index"
+                , new { sort = ViewBag.CategorySort, page = ViewBag.CurrentPage })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Sleep)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Beds)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Description)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Price)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Category)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
+}
+
+</table>
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page, sort= ViewBag.CurrentSort }))
